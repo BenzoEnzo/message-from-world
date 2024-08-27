@@ -1,0 +1,85 @@
+{
+  "doc": "Schema for messages sent by users via Kafka",
+  "fields": [
+    {
+      "doc": "Unique identifier for the message",
+      "name": "messageId",
+      "type": "string"
+    },
+    {
+      "name": "user",
+      "type": {
+        "doc": "User information",
+        "fields": [
+          {
+            "doc": "Unique identifier of the user",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "doc": "Username of the user",
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "doc": "Email address of the user",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "type": {
+              "doc": "Role of the user",
+              "name": "Role",
+              "symbols": [
+                "ADMIN",
+                "USER",
+                "GUEST"
+              ],
+              "type": "enum"
+            }
+          }
+        ],
+        "name": "User",
+        "type": "record"
+      }
+    },
+    {
+      "doc": "Content of the message",
+      "name": "content",
+      "type": "string"
+    },
+    {
+      "doc": "Timestamp when the message was sent",
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "default": {
+        "device": "",
+        "ipAddress": ""
+      },
+      "name": "metadata",
+      "type": {
+        "doc": "Additional metadata for the message",
+        "fields": [
+          {
+            "doc": "IP address of the user when sending the message",
+            "name": "ipAddress",
+            "type": "string"
+          },
+          {
+            "doc": "Device information from which the message was sent",
+            "name": "device",
+            "type": "string"
+          }
+        ],
+        "name": "Metadata",
+        "type": "record"
+      }
+    }
+  ],
+  "name": "MfwMessage",
+  "namespace": "pl.benzo.enzo.mfw.messageserver",
+  "type": "record"
+}

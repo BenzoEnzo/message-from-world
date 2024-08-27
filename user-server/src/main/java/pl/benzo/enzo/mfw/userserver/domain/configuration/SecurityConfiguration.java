@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .csrf(CsrfConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/accounts/login", "/api/accounts/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/accounts/login", "/api/accounts/register", "/").permitAll()
                         .requestMatchers(HttpMethod.GET, SWAGGER_UI, V_3).permitAll()
                         .anyRequest()
                         .authenticated()
