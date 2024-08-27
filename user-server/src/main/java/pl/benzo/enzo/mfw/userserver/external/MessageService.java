@@ -54,14 +54,18 @@ public class MessageService {
     }
 
     public MessageDTO getRandomAndUpdateMessage(HttpServletRequest request){
+        UserDTO profile = handleAuthorization(request);
         MfwMessage randomMessage = kafkaRandomMessageService.getRandomMessage("mfw_MESSAGES");
         MessageDTO msgDTO = MfwMessageMapper.toMessageDTO(randomMessage);
-        UserDTO profile = handleAuthorization(request);
-        msgDTO.setRead(true);
-        ReaderDTO reader = new ReaderDTO(profile.getClientAppId(), profile.getUsername(), LocalDateTime.now());
-        msgDTO.setReader(reader);
-        MfwMessage mfwMessage = createKafkaMsgObject(msgDTO);
-        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage, msgDTO.getMessageId());
+        if(msgDTO.getProfile().getMail().equals(profile.getMail())){
+            getRandomAndUpdateMessage(request);
+        } else {
+            msgDTO.setRead(true);
+            ReaderDTO reader = new ReaderDTO(profile.getClientAppId(), profile.getUsername(), LocalDateTime.now());
+            msgDTO.setReader(reader);
+            MfwMessage mfwMessage = createKafkaMsgObject(msgDTO);
+            kafkaSyncMessagePublisher.publish("mfw_MESSAGES", mfwMessage, msgDTO.getMessageId());
+        }
         return msgDTO;
     }
 

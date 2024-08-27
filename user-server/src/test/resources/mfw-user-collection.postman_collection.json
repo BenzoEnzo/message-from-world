@@ -98,6 +98,36 @@
 			"response": []
 		},
 		{
+			"name": "loggin2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mail\": \"goxer@o2.pl\",\r\n  \"password\": \"stringas\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/accounts/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "delete",
 			"request": {
 				"method": "DELETE",
