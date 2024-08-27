@@ -1,4 +1,4 @@
-package pl.benzo.enzo.mfw.userserver.configuration;
+package pl.benzo.enzo.mfw.userserver.domain.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.benzo.enzo.mfw.userserver.logic.security.RequestAuthenticator;
+import pl.benzo.enzo.mfw.userserver.domain.logic.security.RequestAuthenticator;
 
 @Configuration
 @RequiredArgsConstructor

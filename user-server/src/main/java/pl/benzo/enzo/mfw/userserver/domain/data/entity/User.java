@@ -1,11 +1,11 @@
-package pl.benzo.enzo.mfw.userserver.data.entity;
+package pl.benzo.enzo.mfw.userserver.domain.data.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.benzo.enzo.mfw.userserver.data.enumeration.Role;
+import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
 
 import java.time.LocalDateTime;
 

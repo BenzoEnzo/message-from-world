@@ -1,11 +1,11 @@
-package pl.benzo.enzo.mfw.userserver.logic.user;
+package pl.benzo.enzo.mfw.userserver.domain.logic.user;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import pl.benzo.enzo.mfw.userserver.data.entity.User;
-import pl.benzo.enzo.mfw.userserver.data.dto.UserDTO;
-import pl.benzo.enzo.mfw.userserver.data.mapper.UserMapper;
-import pl.benzo.enzo.mfw.userserver.data.UserRepository;
+import pl.benzo.enzo.mfw.userserver.domain.data.entity.User;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.mapper.UserMapper;
+import pl.benzo.enzo.mfw.userserver.domain.data.UserRepository;
 
 import java.util.List;
 import java.util.Optional;

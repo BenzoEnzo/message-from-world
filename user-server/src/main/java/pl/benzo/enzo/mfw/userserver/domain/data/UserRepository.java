@@ -1,8 +1,8 @@
-package pl.benzo.enzo.mfw.userserver.data;
+package pl.benzo.enzo.mfw.userserver.domain.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.benzo.enzo.mfw.userserver.data.entity.User;
+import pl.benzo.enzo.mfw.userserver.domain.data.entity.User;
 
 import java.util.List;
 import java.util.Optional;

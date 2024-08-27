@@ -1,8 +1,8 @@
-package pl.benzo.enzo.mfw.userserver.data.dto;
+package pl.benzo.enzo.mfw.userserver.domain.data.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import pl.benzo.enzo.mfw.userserver.data.enumeration.Role;
+import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
 
 import java.time.LocalDateTime;
 

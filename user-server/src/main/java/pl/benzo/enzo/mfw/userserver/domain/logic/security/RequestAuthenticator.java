@@ -1,4 +1,4 @@
-package pl.benzo.enzo.mfw.userserver.logic.security;
+package pl.benzo.enzo.mfw.userserver.domain.logic.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,13 +15,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.benzo.enzo.mfw.userserver.data.enumeration.Role;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package pl.benzo.enzo.mfw.userserver.logic.security;
+package pl.benzo.enzo.mfw.userserver.domain.logic.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,14 +8,12 @@ import io.jsonwebtoken.security.Keys;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import pl.benzo.enzo.mfw.userserver.data.enumeration.Role;
+import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j

@@ -3,8 +3,8 @@ package pl.benzo.enzo.mfw.userserver.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.benzo.enzo.mfw.userserver.data.dto.UserDTO;
-import pl.benzo.enzo.mfw.userserver.logic.user.UserService;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
+import pl.benzo.enzo.mfw.userserver.domain.logic.user.UserService;
 
 import java.util.List;
 import java.util.Optional;

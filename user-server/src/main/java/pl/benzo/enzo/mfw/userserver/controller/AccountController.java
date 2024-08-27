@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.benzo.enzo.mfw.userserver.data.dto.AuthorizationDTO;
-import pl.benzo.enzo.mfw.userserver.data.dto.SignInDTO;
-import pl.benzo.enzo.mfw.userserver.data.dto.UserDTO;
-import pl.benzo.enzo.mfw.userserver.logic.AccountManager;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.AuthorizationDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.SignInDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
+import pl.benzo.enzo.mfw.userserver.domain.logic.AccountManager;
 
 import java.util.Optional;
 

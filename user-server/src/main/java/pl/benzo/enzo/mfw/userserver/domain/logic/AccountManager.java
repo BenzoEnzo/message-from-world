@@ -1,17 +1,17 @@
-package pl.benzo.enzo.mfw.userserver.logic;
+package pl.benzo.enzo.mfw.userserver.domain.logic;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.benzo.enzo.mfw.userserver.data.dto.AuthorizationDTO;
-import pl.benzo.enzo.mfw.userserver.data.dto.SignInDTO;
-import pl.benzo.enzo.mfw.userserver.data.dto.UserDTO;
-import pl.benzo.enzo.mfw.userserver.data.entity.User;
-import pl.benzo.enzo.mfw.userserver.data.enumeration.Role;
-import pl.benzo.enzo.mfw.userserver.data.mapper.UserMapper;
-import pl.benzo.enzo.mfw.userserver.logic.security.JwtHandler;
-import pl.benzo.enzo.mfw.userserver.logic.user.UserService;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.AuthorizationDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.SignInDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.entity.User;
+import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
+import pl.benzo.enzo.mfw.userserver.domain.data.mapper.UserMapper;
+import pl.benzo.enzo.mfw.userserver.domain.logic.security.JwtHandler;
+import pl.benzo.enzo.mfw.userserver.domain.logic.user.UserService;
 
 import java.util.Optional;
 

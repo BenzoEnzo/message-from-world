@@ -1,0 +1,81 @@
+{
+  "type": "record",
+  "name": "UserMessage",
+  "namespace": "pl.benzo.enzo.mfw.messageserver",
+  "doc": "Schema for messages sent by users via Kafka",
+  "fields": [
+    {
+      "name": "messageId",
+      "type": "string",
+      "doc": "Unique identifier for the message"
+    },
+    {
+      "name": "user",
+      "type": {
+        "type": "record",
+        "name": "User",
+        "fields": [
+          {
+            "name": "id",
+            "type": "int",
+            "doc": "Unique identifier of the user"
+          },
+          {
+            "name": "username",
+            "type": "string",
+            "doc": "Username of the user"
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "doc": "Email address of the user"
+          },
+          {
+            "name": "role",
+            "type": {
+              "type": "enum",
+              "name": "Role",
+              "symbols": ["ADMIN", "USER", "GUEST"],
+              "doc": "Role of the user"
+            }
+          }
+        ],
+        "doc": "User information"
+      }
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "doc": "Content of the message"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "doc": "Timestamp when the message was sent"
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "record",
+        "name": "Metadata",
+        "fields": [
+          {
+            "name": "ipAddress",
+            "type": "string",
+            "doc": "IP address of the user when sending the message"
+          },
+          {
+            "name": "device",
+            "type": "string",
+            "doc": "Device information from which the message was sent"
+          }
+        ],
+        "doc": "Additional metadata for the message"
+      },
+      "default": {
+        "ipAddress": "",
+        "device": ""
+      }
+    }
+  ]
+}
