@@ -3,10 +3,7 @@ package pl.benzo.enzo.mfw.userserver.external;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.benzo.enzo.mfw.messageserver.Metadata;
-import pl.benzo.enzo.mfw.messageserver.MfwMessage;
-import pl.benzo.enzo.mfw.messageserver.Role;
-import pl.benzo.enzo.mfw.messageserver.User;
+import pl.benzo.enzo.mfw.messageserver.*;
 import pl.benzo.enzo.mfw.messageserver.domain.KafkaSyncMessagePublisher;
 import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
 import pl.benzo.enzo.mfw.userserver.domain.data.mapper.UserMapper;
@@ -36,10 +33,9 @@ public class MessageService {
         UserDTO profile = handleAuthorization(request);
         message.setProfile(profile);
         Map<String,String> idValsMap = transformDataValue(profile.getUsername(), profile.getClientAppId());
-        message.setKey(idValsMap.get("key"));
         message.setMessageId(idValsMap.get("messageId"));
         MfwMessage mfwMessage = createKafkaMsgObject(message);
-        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage,message.getKey());
+        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage,message.getMessageId());
         message.setProfile(afterSendMsgToWorld(message));
         return message;
     }
@@ -80,15 +76,45 @@ public class MessageService {
                 .setDevice(message.getMetadata().deviceName())
                 .build();
 
+        if (message.isRead()) {
+            Reader reader = Reader.newBuilder()
+                    .setId(message.getReader().id())
+                    .setUsername(message.getReader().userName())
+                    .setReadTimestamp(message.getReader().readTimestamp().format(formatter))
+                    .build();
+
+            Lifecycle lifecycle = Lifecycle.newBuilder()
+                    .setIsRead(true)
+                    .setReader(reader)
+                    .build();
+
+            return MfwMessage.newBuilder()
+                    .setMessageId(message.getMessageId())
+                    .setUser(user)
+                    .setContent(message.getContent())
+                    .setTimestamp(formattedTimestamp)
+                    .setMetadata(metadata)
+                    .setLifecycle(lifecycle)
+                    .build();
+
+        } else {
+            Lifecycle lifecycle = Lifecycle.newBuilder()
+                    .setIsRead(false)
+                    .setReader(null)
+                    .build();
+
+
         return MfwMessage.newBuilder()
                 .setMessageId(message.getMessageId())
                 .setUser(user)
                 .setContent(message.getContent())
                 .setTimestamp(formattedTimestamp)
                 .setMetadata(metadata)
+                .setLifecycle(lifecycle)
                 .build();
 
     }
+        }
 
     public Map<String,String> transformDataValue(String username, String clientAppId) {
         for (int i = 0; i < 10000; i++) {

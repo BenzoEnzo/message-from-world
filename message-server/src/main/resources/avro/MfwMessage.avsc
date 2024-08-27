@@ -77,6 +77,52 @@
         "name": "Metadata",
         "type": "record"
       }
+    },
+    {
+      "doc": "Lifecycle information of the message",
+      "name": "lifecycle",
+      "type": {
+        "doc": "Message lifecycle information",
+        "fields": [
+          {
+            "doc": "Flag indicating if the message has been read",
+            "name": "isRead",
+            "type": "boolean"
+          },
+          {
+            "doc": "Information about the user who read the message",
+            "name": "reader",
+            "type": ["null",
+              {
+                "type": "record",
+                "name": "Reader",
+                "namespace": "pl.benzo.enzo.mfw.messageserver",
+                "doc": "Reader information",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "doc": "Unique identifier of the reader"
+                  },
+                  {
+                    "name": "username",
+                    "type": "string",
+                    "doc": "Username of the reader"
+                  },
+                  {
+                    "name": "readTimestamp",
+                    "type": "string",
+                    "doc": "Timestamp when the message was read"
+                  }
+                ]
+              }
+            ],
+            "default": null
+          }
+        ],
+        "name": "Lifecycle",
+        "type": "record"
+      }
     }
   ],
   "name": "MfwMessage",
