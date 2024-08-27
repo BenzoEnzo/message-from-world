@@ -2,6 +2,12 @@ package pl.benzo.enzo.mfw.userserver.external;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.Schema;
+import org.apache.avro.SchemaParser;
+import org.apache.avro.specific.SpecificRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.benzo.enzo.mfw.messageserver.*;
 import pl.benzo.enzo.mfw.messageserver.domain.KafkaSyncMessagePublisher;
@@ -23,7 +29,9 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MessageService {
+    private static final Logger LOGGER = LoggerFactory.getLogger("[MESSAGES]");
     private final KafkaSyncMessagePublisher kafkaSyncMessagePublisher;
     private final JwtHandler jwtHandler;
     private final UserService userService;
@@ -35,7 +43,9 @@ public class MessageService {
         Map<String,String> idValsMap = transformDataValue(profile.getUsername(), profile.getClientAppId());
         message.setMessageId(idValsMap.get("messageId"));
         MfwMessage mfwMessage = createKafkaMsgObject(message);
-        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage,message.getMessageId());
+        LOGGER.info(mfwMessage.toString());
+        LOGGER.info(mfwMessage.getMessageId().toString());
+        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage, message.getMessageId());
         message.setProfile(afterSendMsgToWorld(message));
         return message;
     }
@@ -116,7 +126,7 @@ public class MessageService {
     }
         }
 
-    public Map<String,String> transformDataValue(String username, String clientAppId) {
+    public Map<String, String> transformDataValue(String username, String clientAppId) {
         for (int i = 0; i < 10000; i++) {
             String uniqueElement = Instant.now().toString() + ":" + i;
             String combinedString = username + ":" + clientAppId + ":" + uniqueElement;
@@ -126,11 +136,13 @@ public class MessageService {
 
                 String base64Hash = Base64.getEncoder().encodeToString(hash);
 
-                String key = "message-" + base64Hash.substring(0, base64Hash.length() / 2);
-                String messageId = "messageId-" + base64Hash.substring(base64Hash.length() / 2);
+                String sanitizedHash = base64Hash.replaceAll("[^a-zA-Z0-9]", "");
+
+                String key = "message-" + sanitizedHash.substring(0, sanitizedHash.length() / 2);
+                String messageId = "messageId-" + sanitizedHash.substring(sanitizedHash.length() / 2);
                 Map<String, String> hashM = new HashMap<>();
 
-                hashM.put("key",key);
+                hashM.put("key", key);
                 hashM.put("messageId", messageId);
 
                 return hashM;

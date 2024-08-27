@@ -21,6 +21,6 @@ public class KafkaConfiguration {
     @Value("${spring.kafka.topic.name}")
     String topicName;
 
-    @Value("${spring.kafka.producer.schema.registry.url}")
+    @Value("${spring.kafka.schema.registry.url}")
     String schemaRegistryUrl;
 }

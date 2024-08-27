@@ -43,8 +43,8 @@ class KafkaProducerConfiguration {
         final Map<String, Object> properties = new HashMap<>();
 
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfiguration.getBootstrapServers());
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         properties.put(ProducerConfig.RETRIES_CONFIG, 1);
         properties.put(ProducerConfig.RECONNECT_BACKOFF_MS_CONFIG, "5000");
         properties.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "5000");
