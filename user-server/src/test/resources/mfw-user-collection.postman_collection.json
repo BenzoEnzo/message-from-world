@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "204c5dcf-1031-4096-ae66-e63a2ba090af",
+		"name": "mfw-user-collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18656948"
+	},
+	"item": [
+		{
+			"name": "get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6InN0cmluZ3NzeHlAbzIucGwiLCJpYXQiOjE3MjQ3MTYxODIsImV4cCI6MTcyNDcxNzk4Mn0.uEaU-97dVHNeZ2s4yy--VJBKt83LgOJVUD0HYC7KeuU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"goxer\",\r\n  \"clientAppId\": \"clientudo\",\r\n  \"country\": \"FR\",\r\n  \"password\": \"stringas\",\r\n  \"mail\": \"stringssxy@o2.pl\",\r\n  \"points\": 0,\r\n  \"role\": \"USER\",\r\n  \"createdAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"lastLoggedAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"deprecate\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/accounts/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"accounts",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loggin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mail\": \"goxer\",\r\n  \"password\": \"stringas\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/accounts/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"kubabart\",\r\n  \"clientAppId\": \"clientudo\",\r\n  \"country\": \"POL\",\r\n  \"password\": \"\",\r\n  \"mail\": \"stringz@o2.pl\",\r\n  \"points\": 0,\r\n  \"role\": \"USER\",\r\n  \"createdAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"lastLoggedAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"deprecate\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
