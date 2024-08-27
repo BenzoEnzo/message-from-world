@@ -1,67 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { getUserById, updateUser } from '../apiService';
-import { UserDTO } from '../shared/dto/dtos';
+import React, {useState} from "react";
+import '../style/UserProfile.css';
+import {readRandomMessage, sendMessage} from "../apiService";
+import  MessageDTO from '../shared/dto/dtos';
 
-function UserProfile({ userId }) {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
+function UserProfile({ user }) {
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await getUserById(userId);
+    const [message, setMessage] = useState(null);
+    const [randomMessage, setRandomMessage] = useState(null);
+    const [responseMessage, setResponseMessage] = useState("");
+    const [content, setContent] = useState("");
+    const getJwtToken = () => {
+        return localStorage.getItem('jwtToken');
+    };
 
-                /** @type {UserDTO} */
-                const userData = response.data;
-                setUser(userData);
-            } catch (error) {
-                setError('User not found.');
-            }
-        };
-        fetchUser();
-    }, [userId]);
+    const jwtToken = getJwtToken();
 
-    const handleUpdateUser = async () => {
+
+    const handleSendMessage = async () => {
         try {
-            const response = await updateUser(user.id, user);
+            /** @type {MessageDTO} */
+            const response = await sendMessage({
+                "messageId": "string",
+                "sendAt": "2024-08-27T21:12:05.843Z",
+                "content": content,
+                "profile": {
+                    "id": 0,
+                    "username": "string",
+                    "clientAppId": "string",
+                    "country": "st",
+                    "password": "string",
+                    "mail": "string",
+                    "points": 0,
+                    "role": "USER",
+                    "createdAt": "2024-08-27T21:12:05.843Z",
+                    "lastLoggedAt": "2024-08-27T21:12:05.843Z",
+                    "deprecate": true
+                },
+                "metadata": {
+                    "ipAddress": "string",
+                    "deviceName": "string"
+                },
+                "reader": {
+                    "id": "string",
+                    "userName": "string",
+                    "readTimestamp": "2024-08-27T21:12:05.843Z"
+                },
+                "read": true
+            }, { headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }});
 
-            /** @type {UserDTO} */
-            const updatedUser = response.data;
-            setUser(updatedUser);
+            /** @type {MessageDTO} */
+            setResponseMessage(`Message sent: ${content}`);
+            setMessage("");
         } catch (error) {
-            setError('Error updating user.');
+            setResponseMessage("Error sending message.");
+            console.error('Error sending message:', error);
         }
     };
 
-    if (error) {
-        return <p>{error}</p>;
-    }
+    const handleReadMessage = async () => {
+        try {
+            const response = await readRandomMessage({
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            });
 
-    if (!user) {
+            /** @type {MessageDTO} */
+            const message = response.data;
+            setRandomMessage(message);
+        } catch (error) {
+            setRandomMessage("Error reading message.");
+            console.error('Error reading message:', error);
+        }
+    };
+
+    if (!user || !jwtToken) {
         return <p>Loading...</p>;
     }
 
     return (
-        <div>
-            <h2>User Profile</h2>
-            <input
-                type="text"
-                value={user.username}
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-            />
-            <input
-                type="text"
-                value={user.mail}
-                onChange={(e) => setUser({ ...user, mail: e.target.value })}
-            />
-            <input
-                type="text"
-                value={user.country}
-                onChange={(e) => setUser({ ...user, country: e.target.value })}
-            />
-            <button onClick={handleUpdateUser}>Update Profile</button>
+        <div className="container">
+            <div className="main-content">
+                <div className="message-box">
+                    <h1>Message Center</h1>
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Write your message..."
+                        rows="4"
+                        className="message-input"
+                    />
+                    <button onClick={handleSendMessage} className="button send-button">
+                        Send Message
+                    </button>
+                    <button onClick={handleReadMessage} className="button fetch-button">
+                        Get Random Message
+                    </button>
+                    {responseMessage && <p className="response-message">{responseMessage}</p>}
+                    {randomMessage &&
+                        <p className="random-message"><strong>Random Message:</strong> {randomMessage}</p>}
+                </div>
+            </div>
+            <div className="profile-container">
+                <div className="profile-card">
+                    <h2>Welcome, {user.username}</h2>
+                    <p><span>Email:</span> {user.mail}</p>
+                    <p><span>Country:</span> {user.country}</p>
+                    <p><span>Points:</span> {user.points}</p>
+                    <p><span>Created At:</span> {user.createdAt}</p>
+
+                </div>
+            </div>
         </div>
     );
 }
+
 
 export default UserProfile;

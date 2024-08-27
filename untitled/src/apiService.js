@@ -10,12 +10,12 @@ export const register = async (userData) => {
     return axios.post(`${API_BASE_URL}/accounts/register`, userData);
 };
 
-export const sendMessage = async (messageData) => {
-    return axios.post(`${API_BASE_URL}/messages`, messageData);
+export const sendMessage = async (messageData, headers) => {
+    return axios.post(`${API_BASE_URL}/messages`, messageData, headers);
 };
 
-export const readRandomMessage = async () => {
-    return axios.get(`${API_BASE_URL}/messages`);
+export const readRandomMessage = async (headers) => {
+    return axios.get(`${API_BASE_URL}/messages`, headers);
 };
 
 export const getUserById = async (id) => {

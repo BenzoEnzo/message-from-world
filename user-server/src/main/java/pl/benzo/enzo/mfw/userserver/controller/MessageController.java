@@ -12,6 +12,7 @@ import pl.benzo.enzo.mfw.userserver.external.data.MessageDTO;
 @RestController
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class MessageController {
     private final MessageService messageService;
 

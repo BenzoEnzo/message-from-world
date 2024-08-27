@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './component/Login';
-import Register from './component/Register';
-import Messages from './component/Messages';
 import UserProfile from './component/UserProfile';
 
 function App() {
@@ -17,10 +15,9 @@ function App() {
       <Router>
         <div>
           <Routes>
-            <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/messages" element={<Messages />} />
-            {user && <Route path="/profile" element={<UserProfile userId={user.id} />} />}
+              <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+              {user && <Route path="/profile" element={<UserProfile user={user} />} />}
+              <Route path="*" element={<Login onLoginSuccess={handleLoginSuccess} />} />
           </Routes>
         </div>
       </Router>
