@@ -11,11 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.benzo.enzo.mfw.messageserver.*;
 import pl.benzo.enzo.mfw.messageserver.domain.KafkaSyncMessagePublisher;
+import pl.benzo.enzo.mfw.messageserver.logic.KafkaRandomMessageService;
 import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
 import pl.benzo.enzo.mfw.userserver.domain.data.mapper.UserMapper;
 import pl.benzo.enzo.mfw.userserver.domain.logic.security.JwtHandler;
 import pl.benzo.enzo.mfw.userserver.domain.logic.user.UserService;
 import pl.benzo.enzo.mfw.userserver.external.data.MessageDTO;
+import pl.benzo.enzo.mfw.userserver.external.data.dto.ReaderDTO;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -33,6 +35,7 @@ import java.util.Map;
 public class MessageService {
     private static final Logger LOGGER = LoggerFactory.getLogger("[MESSAGES]");
     private final KafkaSyncMessagePublisher kafkaSyncMessagePublisher;
+    private final KafkaRandomMessageService kafkaRandomMessageService;
     private final JwtHandler jwtHandler;
     private final UserService userService;
     private final UserMapper userMapper;
@@ -48,6 +51,18 @@ public class MessageService {
         kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage, message.getMessageId());
         message.setProfile(afterSendMsgToWorld(message));
         return message;
+    }
+
+    public MessageDTO getRandomAndUpdateMessage(HttpServletRequest request){
+        MfwMessage randomMessage = kafkaRandomMessageService.getRandomMessage("mfw_MESSAGES");
+        MessageDTO msgDTO = MfwMessageMapper.toMessageDTO(randomMessage);
+        UserDTO profile = handleAuthorization(request);
+        msgDTO.setRead(true);
+        ReaderDTO reader = new ReaderDTO(profile.getClientAppId(), profile.getUsername(), LocalDateTime.now());
+        msgDTO.setReader(reader);
+        MfwMessage mfwMessage = createKafkaMsgObject(msgDTO);
+        kafkaSyncMessagePublisher.publish("mfw_MESSAGES",mfwMessage, msgDTO.getMessageId());
+        return msgDTO;
     }
 
     private UserDTO handleAuthorization(HttpServletRequest request) {

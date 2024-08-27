@@ -6,7 +6,7 @@ import pl.benzo.enzo.mfw.messageserver.*;
 public class MfwMessageConverter {
 
     public static MfwMessage convertToMfwMessage(GenericRecord genericRecord) {
-        // Pobranie danych użytkownika
+
         GenericRecord userRecord = (GenericRecord) genericRecord.get("user");
         User user = User.newBuilder()
                 .setId(userRecord.get("id").toString())
@@ -15,14 +15,14 @@ public class MfwMessageConverter {
                 .setRole(Role.valueOf(userRecord.get("role").toString()))
                 .build();
 
-        // Pobranie danych metadanych
+
         GenericRecord metadataRecord = (GenericRecord) genericRecord.get("metadata");
         Metadata metadata = Metadata.newBuilder()
                 .setIpAddress(metadataRecord.get("ipAddress").toString())
                 .setDevice(metadataRecord.get("device").toString())
                 .build();
 
-        // Pobranie danych cyklu życia (Lifecycle)
+
         GenericRecord lifecycleRecord = (GenericRecord) genericRecord.get("lifecycle");
         Reader reader = null;
         if (lifecycleRecord.get("reader") != null) {
