@@ -123,8 +123,8 @@ public class MessageService {
                 .setLifecycle(lifecycle)
                 .build();
 
-    }
         }
+    }
 
     public Map<String, String> transformDataValue(String username, String clientAppId) {
         for (int i = 0; i < 10000; i++) {
