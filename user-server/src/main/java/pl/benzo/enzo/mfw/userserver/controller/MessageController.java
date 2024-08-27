@@ -1,5 +1,6 @@
 package pl.benzo.enzo.mfw.userserver.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("")
-    public ResponseEntity<MessageDTO> sendMsg(@RequestBody MessageDTO request) {
-        MessageDTO response = messageService.sendMessage(request);
+    public ResponseEntity<MessageDTO> sendMsg(@RequestBody MessageDTO request, HttpServletRequest httpRequest) {
+        MessageDTO response = messageService.sendMessage(request, httpRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
