@@ -188,7 +188,7 @@
 						<classPattern>pl.benzo.enzo.mfw.userserver.**.*DTO</classPattern>
 					</classPatterns>
 					<outputKind>module</outputKind>
-					<outputFile>../../message-from-world/untitled/src/shared/dto/dtos.ts</outputFile>
+					<outputFile>../../message-from-world/my-app/shared/dto/dtos.ts</outputFile>
 					<outputFileType>implementationFile</outputFileType>
 					<mapEnum>asEnum</mapEnum>
 					<mapDate>asString</mapDate>

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsernameAndDeprecateIsFalse(String username);
     List<User> findAllByDeprecateIsFalse();
+    List<User> findAllByDeprecateIsFalseOrderByPointsDesc();
     Optional<User> findByMailAndDeprecateIsFalse(String mail);
     Optional<User> findByIdAndDeprecateIsFalse(Long id);
     Optional<User> findByClientAppIdAndDeprecateIsFalse(String clientAppId);

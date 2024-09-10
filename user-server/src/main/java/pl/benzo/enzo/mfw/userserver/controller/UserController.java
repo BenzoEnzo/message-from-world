@@ -44,4 +44,10 @@ public class UserController {
         userService.deprecateUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("/{id}/points")
+    public ResponseEntity<Void> addPointToUser(@PathVariable Long id){
+        userService.addPointToUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

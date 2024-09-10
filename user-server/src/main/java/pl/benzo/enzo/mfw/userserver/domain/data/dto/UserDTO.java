@@ -19,7 +19,7 @@ public class UserDTO {
     private String password;
     private String mail;
     private Integer points;
-    private Role role;
+    private Role role = Role.USER;
     private LocalDateTime createdAt;
     private LocalDateTime lastLoggedAt;
     private boolean deprecate;

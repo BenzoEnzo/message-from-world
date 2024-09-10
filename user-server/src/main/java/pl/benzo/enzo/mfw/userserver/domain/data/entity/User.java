@@ -40,18 +40,16 @@ public class User {
     @Column(nullable = false)
     private String mail;
 
-    @Column(nullable = false)
-    private Integer points;
+    private Integer points = 0;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime lastLoggedAt;
 
-    @Column(nullable = false)
     private boolean deprecate = false;
 }

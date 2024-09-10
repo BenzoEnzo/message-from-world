@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import pl.benzo.enzo.mfw.userserver.domain.data.entity.User;
 import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
+import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
 import pl.benzo.enzo.mfw.userserver.domain.data.mapper.UserMapper;
 import pl.benzo.enzo.mfw.userserver.domain.data.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +27,9 @@ public class UserService {
 
     public UserDTO createUser(@Valid UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
+        user.setRole(Role.USER);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setPoints(100);
         user.setClientAppId(userDTO.getRole().toString() + "-" + UUID.randomUUID() + "-" + userDTO.getCountry());
         User savedUser = userRepository.save(user);
         return userMapper.toPrivateDTO(savedUser);
@@ -41,7 +46,7 @@ public class UserService {
     }
 
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAllByDeprecateIsFalse()
+        return userRepository.findAllByDeprecateIsFalseOrderByPointsDesc()
                 .stream()
                 .map(userMapper::toPrivateDTO)
                 .collect(Collectors.toList());
@@ -77,5 +82,12 @@ public class UserService {
                     user.setDeprecate(true);
                     userRepository.save(user);
                 });
+    }
+
+    public void addPointToUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User does not exist"));
+        int points = user.getPoints() + 1;
+        user.setPoints(points);
+        userRepository.save(user);
     }
 }

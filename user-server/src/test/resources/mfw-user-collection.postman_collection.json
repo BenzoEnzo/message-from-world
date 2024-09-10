@@ -38,13 +38,45 @@
 			"response": []
 		},
 		{
+			"name": "add point to user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imt1YmF0ZXN0aW5nQG8yLnBsIiwiaWF0IjoxNzI2MDAwNDAyLCJleHAiOjE3MjYwMDIyMDJ9.MvL-zDx4fAo-Nc6WfxKvmiBDgYAwQGjAMgg9swkvYIg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/api/users/2/points",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"users",
+						"2",
+						"points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "registration",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"goxer\",\r\n  \"clientAppId\": \"clientudo\",\r\n  \"country\": \"FR\",\r\n  \"password\": \"stringas\",\r\n  \"mail\": \"stringssxy@o2.pl\",\r\n  \"points\": 0,\r\n  \"role\": \"USER\",\r\n  \"createdAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"lastLoggedAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"deprecate\": false\r\n}",
+					"raw": "{\r\n  \"username\": \"kubatesting\",\r\n  \"clientAppId\": \"ios\",\r\n  \"country\": \"FR\",\r\n  \"password\": \"stringass\",\r\n  \"mail\": \"kubatesting@o2.pl\",\r\n  \"points\": 0,\r\n  \"role\": \"USER\",\r\n  \"createdAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"lastLoggedAt\": \"2024-08-26T22:34:22.793Z\",\r\n  \"deprecate\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,12 +84,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/accounts/register",
+					"raw": "http://localhost:8084/api/accounts/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8081",
+					"port": "8084",
 					"path": [
 						"api",
 						"accounts",
@@ -74,7 +106,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"mail\": \"goxer\",\r\n  \"password\": \"stringas\"\r\n}",
+					"raw": "{\r\n  \"mail\": \"kubatesting@o2.pl\",\r\n  \"password\": \"stringass\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -82,12 +114,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/accounts/login",
+					"raw": "http://localhost:8084/api/accounts/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8081",
+					"port": "8084",
 					"path": [
 						"api",
 						"accounts",
@@ -151,15 +183,25 @@
 		{
 			"name": "get all",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imt1YmF0ZXN0aW5nQG8yLnBsIiwiaWF0IjoxNzI2MDAwNDAyLCJleHAiOjE3MjYwMDIyMDJ9.MvL-zDx4fAo-Nc6WfxKvmiBDgYAwQGjAMgg9swkvYIg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/users",
+					"raw": "http://localhost:8084/api/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8081",
+					"port": "8084",
 					"path": [
 						"api",
 						"users"
@@ -206,7 +248,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6InN0cmluZ3NzeHlAbzIucGwiLCJpYXQiOjE3MjQ3NDQ2MzQsImV4cCI6MTcyNDc0NjQzNH0.6UlXwZ4MMilIbvUmKgFN9L86XawxxZsKwUo541F334Q",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imt1YmF0ZXN0aW5nQG8yLnBsIiwiaWF0IjoxNzI2MDAwNDAyLCJleHAiOjE3MjYwMDIyMDJ9.MvL-zDx4fAo-Nc6WfxKvmiBDgYAwQGjAMgg9swkvYIg",
 							"type": "string"
 						}
 					]
@@ -215,7 +257,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"messageId\": \"string\",\r\n  \"sendAt\": \"2024-08-27T07:43:03.655Z\",\r\n  \"content\": \"hej jak tam leci czlowieniu 22 2\",\r\n  \"profile\": {\r\n    \"id\": 0,\r\n    \"username\": \"string\",\r\n    \"clientAppId\": \"string\",\r\n    \"country\": \"st\",\r\n    \"password\": \"string\",\r\n    \"mail\": \"string\",\r\n    \"points\": 0,\r\n    \"role\": \"USER\",\r\n    \"createdAt\": \"2024-08-27T07:43:03.655Z\",\r\n    \"lastLoggedAt\": \"2024-08-27T07:43:03.655Z\",\r\n    \"deprecate\": false\r\n  },\r\n  \"metadata\": {\r\n    \"ipAddress\": \"string\",\r\n    \"deviceName\": \"string\"\r\n  },\r\n  \"reader\": {\r\n    \"id\": \"string\",\r\n    \"userName\": \"string\",\r\n    \"readTimestamp\": \"2024-08-27T07:43:03.655Z\"\r\n  },\r\n  \"read\": false\r\n}",
+					"raw": "{\r\n  \"messageId\": \"string\",\r\n  \"sendAt\": \"2024-08-27T07:43:03.655Z\",\r\n  \"content\": \"helo helo siabadabada \",\r\n  \"profile\": {\r\n    \"id\": 0,\r\n    \"username\": \"string\",\r\n    \"clientAppId\": \"string\",\r\n    \"country\": \"st\",\r\n    \"password\": \"string\",\r\n    \"mail\": \"string\",\r\n    \"points\": 0,\r\n    \"role\": \"USER\",\r\n    \"createdAt\": \"2024-08-27T07:43:03.655Z\",\r\n    \"lastLoggedAt\": \"2024-08-27T07:43:03.655Z\",\r\n    \"deprecate\": false\r\n  },\r\n  \"metadata\": {\r\n    \"ipAddress\": \"string\",\r\n    \"deviceName\": \"string\"\r\n  },\r\n  \"reader\": {\r\n    \"id\": \"string\",\r\n    \"userName\": \"string\",\r\n    \"readTimestamp\": \"2024-08-27T07:43:03.655Z\"\r\n  },\r\n  \"read\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

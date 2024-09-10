@@ -79,7 +79,7 @@ public class MessageService {
     private UserDTO afterSendMsgToWorld(MessageDTO message){
         UserDTO userDTO = message.getProfile();
         pl.benzo.enzo.mfw.userserver.domain.data.entity.User user = userService.getUserByMail(userDTO.getMail());
-        int points = user.getPoints() + 1;
+        int points = user.getPoints() - 1;
         user.setPoints(points);
         return userService.updateUser(user.getId(), userMapper.toDTO(user));
     }
