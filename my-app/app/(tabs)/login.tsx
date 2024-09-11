@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import AuthLayout from '@/components/AuthLayout';
-import { DTOs } from "@/shared/dto/dtos";
+import {DTOs} from "@/shared/dto/dtos";
 import { ThemedText } from '@/components/ThemedText';
 import { useRouter } from 'expo-router';
 import { login } from "@/scripts/apiService";
@@ -37,7 +37,18 @@ export default function LoginScreen() {
             if (response?.status == 200) {
 
                 await AsyncStorage.setItem('token', JSON.stringify(response.data.jwtToken));
-                console.log(await AsyncStorage.getItem('token'));
+
+                await AsyncStorage.setItem('loggedUserData', JSON.stringify({
+                    clientAppId: response.data.profile.clientAppId,
+                    country: response.data.profile.country,
+                    createdAt: response.data.profile.createdAt,
+                    lastLoggedAt: response.data.profile.lastLoggedAt,
+                    mail: response.data.profile.mail,
+                    points: response.data.profile.points,
+                    role: response.data.profile.role,
+                    username: response.data.profile.username
+                }));
+
                 router.push('/');
             } else {
                 Alert.alert('Invalid credentials, please try again.');
@@ -48,17 +59,14 @@ export default function LoginScreen() {
         }
     };
 
-    const handleBack = () => {
-        router.back();
-    };
-
     return (
         <AuthLayout>
-            <ThemedText style={styles.title}>Login</ThemedText>
+            <ThemedText style={styles.title}>Sign-in</ThemedText>
 
             <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#888"
                 value={email}
                 keyboardType="email-address"
                 onChangeText={(text) => setEmail(text)}
@@ -67,6 +75,7 @@ export default function LoginScreen() {
             <TextInput
                 style={styles.input}
                 placeholder="Password"
+                placeholderTextColor="#888"
                 secureTextEntry
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -76,9 +85,6 @@ export default function LoginScreen() {
                 <ThemedText style={styles.buttonText}>Sign In</ThemedText>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleBack} style={styles.button}>
-                <ThemedText style={styles.buttonText}>Back</ThemedText>
-            </TouchableOpacity>
         </AuthLayout>
     );
 }
@@ -86,13 +92,13 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     title: {
         fontSize: 28,
-        color: '#2ecc71',
+        color: '#ffffff',
         marginBottom: 20,
         fontWeight: 'bold',
     },
     input: {
         height: 50,
-        width: '100%',
+        width: '80%',
         backgroundColor: '#f0f0f0',
         marginBottom: 20,
         paddingHorizontal: 15,
@@ -101,6 +107,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#2ecc71',
         padding: 15,
+        width: '50%',
         alignItems: 'center',
         borderRadius: 10,
         marginTop: 10,

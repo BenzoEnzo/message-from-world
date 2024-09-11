@@ -1,13 +1,28 @@
 import React, {useEffect, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Alert, Text} from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import AuthLayout from '@/components/AuthLayout';
 import {useFocusEffect, useRouter} from 'expo-router';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export default function HomeScreen() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const clearCacheOnStartup = async () => {
+      try {
+        await AsyncStorage.clear();
+        console.log('Pamięć cache została wyczyszczona.');
+      } catch (e) {
+        console.error('Błąd podczas czyszczenia pamięci cache:', e);
+      }
+    };
+
+    // Wywołanie funkcji czyszczenia pamięci cache
+    clearCacheOnStartup();
+  }, []);
 
   useFocusEffect(
       React.useCallback(() => {
@@ -49,7 +64,8 @@ export default function HomeScreen() {
 
   return (
       <AuthLayout>
-        <ThemedText style={styles.title}>Messages from world</ThemedText>
+        <Text style={styles.title}>Messages</Text>
+        <Text style={styles.subTitle}>From the world</Text>
         {!token ? (
             <>
               <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
@@ -64,9 +80,6 @@ export default function HomeScreen() {
             <TouchableOpacity style={styles.button} onPress={handleProfile}>
               <ThemedText style={styles.buttonText}>Profile</ThemedText>
             </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <ThemedText style={styles.buttonText}>Logout</ThemedText>
-      </TouchableOpacity>
             </>
         )}
         <TouchableOpacity style={styles.button} onPress={handleRanking}>
@@ -78,6 +91,17 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   title: {
+    fontSize: 52,
+    color: '#ffffff',
+    marginBottom: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 4,
+    letterSpacing: 1.2,
+  },
+  subTitle: {
     fontSize: 32,
     color: '#ffffff',
     marginBottom: 20,

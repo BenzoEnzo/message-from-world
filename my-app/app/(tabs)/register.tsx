@@ -22,6 +22,7 @@ export default function RegisterScreen() {
 
         try {
             await register(registrationData);
+            router.push("/");
             Alert.alert('Success', 'Registration finished successful.');
         } catch (err) {
             Alert.alert('Error', 'Registration failed, try again.');
@@ -65,10 +66,6 @@ export default function RegisterScreen() {
                 <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleBack} style={styles.button}>
-                <ThemedText style={styles.buttonText}>Back</ThemedText>
-            </TouchableOpacity>
-
         </AuthLayout>
     );
 }
@@ -76,13 +73,13 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
     title: {
         fontSize: 28,
-        color: '#2ecc71',
+        color: '#ffffff',
         marginBottom: 20,
         fontWeight: 'bold',
     },
     input: {
         height: 50,
-        width: 200,
+        width: '80%',
         backgroundColor: '#f0f0f0',
         marginBottom: 20,
         paddingHorizontal: 15,
@@ -91,11 +88,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#2ecc71',
         padding: 15,
+        width: '50%',
         paddingTop: 10,
         paddingBottom: 10,
         alignItems: 'center',
         borderRadius: 10,
-        width: 100,
     },
     buttonText: {
         color: '#fff',

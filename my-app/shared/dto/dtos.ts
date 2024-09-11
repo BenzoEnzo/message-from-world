@@ -131,6 +131,12 @@ export namespace DTOs {
         username: string;
     }
 
+    export interface LoggedUserData {
+        username: string;
+        points: number;
+        country: string;
+    }
+
     export type DateAsString = string;
 
     export enum Action {

@@ -30,6 +30,11 @@ export const getUserById = async (id: string): Promise<AxiosResponse<UserDTO>> =
     return axios.get<UserDTO>(`${API_BASE_URL}/users/${id}`);
 };
 
+export const honorUser = async (authorClientAppId: string | undefined, headers: AxiosRequestHeaders): Promise<AxiosResponse<void>> => {
+    return axios.patch<void>(`${API_BASE_URL}/users/${authorClientAppId}/points`, null, { headers });
+};
+
+
 
 export const getAllUsers = async (): Promise<AxiosResponse<UserDTO[]>> => {
     return axios.get<UserDTO[]>(`${API_BASE_URL}/users`);

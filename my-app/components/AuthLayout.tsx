@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
+    input: {
+        height: 50,
+        width: '80%',
+        backgroundColor: '#f0f0f0',
+        marginBottom: 20,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+    },
     contentContainer: {
         flex: 1,
         justifyContent: 'center',
