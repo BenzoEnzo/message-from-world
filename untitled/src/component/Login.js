@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { login } from "../apiService";
-import { AuthorizationDTO, SignInDTO } from "../shared/dto/dtos";
+import { login, register } from "../apiService";
+import { AuthorizationDTO, SignInDTO, UserDTO } from "../shared/dto/dtos";
 import { useNavigate } from "react-router-dom";
 import '../style/Login.css';
 
 function Login({ onLoginSuccess }) {
+    const [isRegistering, setIsRegistering] = useState(false);
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [country, setCountry] = useState('');
     const [error, setError] = useState(null);
+    const [clientAppId] = useState('myAppId'); // Example clientAppId, adjust as needed
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
 
-        // You can reference DTOs here, even though JS doesn't enforce it
         /** @type {SignInDTO} */
         const credentials = { mail, password };
 
@@ -30,30 +33,106 @@ function Login({ onLoginSuccess }) {
         }
     };
 
+    const handleRegisterSubmit = async (e) => {
+        e.preventDefault();
+
+        /** @type {Omit<UserDTO, 'id' | 'points' | 'role' | 'createdAt' | 'lastLoggedAt' | 'deprecate'>} */
+        const registrationData = {
+            username,
+            mail,
+            password,
+            country,
+            clientAppId,
+        };
+
+        try {
+            await register(registrationData);
+            setIsRegistering(false);
+            setError(null);
+        } catch (error) {
+            setError('Registration failed. Please try again.');
+        }
+    };
+
     return (
         <div className="container">
             <div className="formContainer">
-                <h2 className="title">Welcome Back</h2>
-                {error && <p className="errorText">{error}</p>}
-                <form onSubmit={handleSubmit} className="form">
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={mail}
-                        onChange={(e) => setMail(e.target.value)}
-                        required
-                        className="input"
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="input"
-                    />
-                    <button type="submit" className="button">Login</button>
-                </form>
+                <div className="toggle-buttons">
+                    <button
+                        className={`toggle-button ${!isRegistering ? 'active' : ''}`}
+                        onClick={() => setIsRegistering(false)}
+                    >
+                        Login
+                    </button>
+                    <button
+                        className={`toggle-button ${isRegistering ? 'active' : ''}`}
+                        onClick={() => setIsRegistering(true)}
+                    >
+                        Register
+                    </button>
+                </div>
+
+                {isRegistering ? (
+                    <form onSubmit={handleRegisterSubmit} className="form">
+                        <h2 className="title">Create an Account</h2>
+                        {error && <p className="errorText">{error}</p>}
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={mail}
+                            onChange={(e) => setMail(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Country Code"
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <button type="submit" className="button">Sign-up</button>
+                    </form>
+                ) : (
+                    <form onSubmit={handleLoginSubmit} className="form">
+                        <h2 className="title">Welcome Back</h2>
+                        {error && <p className="errorText">{error}</p>}
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={mail}
+                            onChange={(e) => setMail(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="input"
+                        />
+                        <button type="submit" className="button">Sign-in</button>
+                    </form>
+                )}
             </div>
         </div>
     );

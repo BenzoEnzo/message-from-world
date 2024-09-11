@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.benzo.enzo.mfw.userserver.domain.logic.security.RequestAuthenticator;
 
 @Configuration
@@ -29,6 +31,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/accounts/login", "/api/accounts/register", "/").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET, SWAGGER_UI, V_3).permitAll()
                         .anyRequest()
                         .authenticated()
@@ -51,5 +54,17 @@ public class SecurityConfiguration {
         return (web) -> web.ignoring().requestMatchers("/h2-console/**")
                 .requestMatchers("/swagger-ui/**")
                 .requestMatchers("/v3/**");
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                        .allowedOrigins("*");
+            }
+        };
     }
 }

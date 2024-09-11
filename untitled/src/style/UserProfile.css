@@ -43,6 +43,31 @@
     box-sizing: border-box;
 }
 
+.random-message-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+}
+
+.random-message-box h3 {
+    margin-top: 0;
+    font-size: 22px;
+    color: #2C5F2D;
+}
+
+.random-message-box .message-content {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.random-message-box .message-author {
+    font-size: 16px;
+    color: #3B7A57;
+    font-weight: bold;
+}
+
 .button {
     padding: 10px 15px;
     border-radius: 5px;

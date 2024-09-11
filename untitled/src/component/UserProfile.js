@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import '../style/UserProfile.css';
 import {readRandomMessage, sendMessage} from "../apiService";
-import  MessageDTO from '../shared/dto/dtos';
+import  { MessageDTO } from '../shared/dto/dtos';
 
 function UserProfile({ user }) {
 
     const [message, setMessage] = useState(null);
-    const [randomMessage, setRandomMessage] = useState(null);
+    const [randomMessage, setRandomMessage] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
     const [content, setContent] = useState("");
     const getJwtToken = () => {
@@ -45,7 +45,7 @@ function UserProfile({ user }) {
                     "userName": "string",
                     "readTimestamp": "2024-08-27T21:12:05.843Z"
                 },
-                "read": true
+                "read": false
             }, { headers: {
                     'Authorization': `Bearer ${jwtToken}`
                 }});
@@ -61,15 +61,13 @@ function UserProfile({ user }) {
 
     const handleReadMessage = async () => {
         try {
-            const response = await readRandomMessage({
+            /** @type {MessageDTO} */
+           const response = await readRandomMessage({
                 headers: {
                     'Authorization': `Bearer ${jwtToken}`
                 }
             });
-
-            /** @type {MessageDTO} */
-            const message = response.data;
-            setRandomMessage(message);
+           
         } catch (error) {
             setRandomMessage("Error reading message.");
             console.error('Error reading message:', error);
@@ -99,8 +97,13 @@ function UserProfile({ user }) {
                         Get Random Message
                     </button>
                     {responseMessage && <p className="response-message">{responseMessage}</p>}
-                    {randomMessage &&
-                        <p className="random-message"><strong>Random Message:</strong> {randomMessage}</p>}
+                    {randomMessage && (
+                        <div className="random-message-box">
+                            <h3>Random Message:</h3>
+                            <p className="message-content">{randomMessage}</p>
+
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="profile-container">
@@ -109,7 +112,7 @@ function UserProfile({ user }) {
                     <p><span>Email:</span> {user.mail}</p>
                     <p><span>Country:</span> {user.country}</p>
                     <p><span>Points:</span> {user.points}</p>
-                    <p><span>Created At:</span> {user.createdAt}</p>
+                    <p><span>Account Created At:</span> {user.createdAt}</p>
 
                 </div>
             </div>
