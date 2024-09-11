@@ -38,7 +38,7 @@ export default function LoginScreen() {
 
                 await AsyncStorage.setItem('token', JSON.stringify(response.data.jwtToken));
                 console.log(await AsyncStorage.getItem('token'));
-                router.push('/ranking');
+                router.push('/');
             } else {
                 Alert.alert('Invalid credentials, please try again.');
             }

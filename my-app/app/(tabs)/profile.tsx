@@ -39,7 +39,7 @@ export default function ProfileScreen() {
         try {
 
             const messageData = { content }; // Tworzenie wiadomości
-            const headers = { Authorization: `Bearer ${token}` }; // Nagłówki z tokenem
+            const headers: AxiosRequestHeaders = { Authorization: `Bearer ${token}` } as AxiosRequestHeaders;
             await sendMessage(messageData, headers); // Wywołanie API
             Alert.alert('Success', 'Message sent successfully.');
             setContent(''); // Wyczyść formularz

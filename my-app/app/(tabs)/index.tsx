@@ -1,12 +1,29 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import AuthLayout from '@/components/AuthLayout';
-import { useRouter } from 'expo-router';
-
+import {useFocusEffect, useRouter} from 'expo-router';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+
+  useFocusEffect(
+      React.useCallback(() => {
+        const fetchToken = async () => {
+          try {
+            const storedToken = await AsyncStorage.getItem('token');
+            setToken(storedToken);
+          } catch (error) {
+            Alert.alert('Error', 'Failed to retrieve token.');
+          }
+        };
+
+        fetchToken();
+      }, [])
+  );
+
 
   const handleSignIn = () => {
     router.push('/login');
@@ -24,10 +41,16 @@ export default function HomeScreen() {
     router.push('/profile');
   }
 
+  const handleLogout = async () => {
+    await AsyncStorage.clear();
+    setToken(null);
+    router.push('/');
+  }
+
   return (
       <AuthLayout>
         <ThemedText style={styles.title}>Messages from world</ThemedText>
-
+        {!token ? (
             <>
               <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
                 <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
@@ -37,10 +60,15 @@ export default function HomeScreen() {
                 <ThemedText style={styles.buttonText}>Sign In</ThemedText>
               </TouchableOpacity>
             </>
+        ) : (<>
             <TouchableOpacity style={styles.button} onPress={handleProfile}>
               <ThemedText style={styles.buttonText}>Profile</ThemedText>
             </TouchableOpacity>
-
+          <TouchableOpacity style={styles.button} onPress={handleLogout}>
+        <ThemedText style={styles.buttonText}>Logout</ThemedText>
+      </TouchableOpacity>
+            </>
+        )}
         <TouchableOpacity style={styles.button} onPress={handleRanking}>
           <ThemedText style={styles.buttonText}>Ranking</ThemedText>
         </TouchableOpacity>

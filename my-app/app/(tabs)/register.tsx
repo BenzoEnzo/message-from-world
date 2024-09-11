@@ -14,11 +14,9 @@ export default function RegisterScreen() {
 
     const handleRegister = async () => {
         const registrationData: DTOs.UserDTO = {
-            clientAppId: 'IOS',
             country: 'PL',
             mail: email,
             password: password,
-            role: DTOs.Role.USER,
             username: username,
         };
 

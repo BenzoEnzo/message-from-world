@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, ImageBackground } from 'react-native';
-import {AuthProvider} from "@/scripts/authContext";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-    },
+        padding: 20
+    }
 });

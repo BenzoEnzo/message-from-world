@@ -118,7 +118,7 @@ export namespace DTOs {
     }
 
     export interface UserDTO {
-        clientAppId: string;
+        clientAppId?: string;
         country: string;
         createdAt?: DateAsString;
         deprecate?: boolean;
@@ -127,7 +127,7 @@ export namespace DTOs {
         mail: string;
         password: string;
         points?: number;
-        role: Role;
+        role?: Role;
         username: string;
     }
 
