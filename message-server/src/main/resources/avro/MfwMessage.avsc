@@ -82,46 +82,45 @@
       "doc": "Lifecycle information of the message",
       "name": "lifecycle",
       "type": {
-        "doc": "Message lifecycle information",
-        "fields": [
-          {
-            "doc": "Flag indicating if the message has been read",
-            "name": "isRead",
-            "type": "boolean"
-          },
-          {
-            "doc": "Information about the user who read the message",
-            "name": "reader",
-            "type": ["null",
-              {
-                "type": "record",
-                "name": "Reader",
-                "namespace": "pl.benzo.enzo.mfw.messageserver",
+        "type": "array",
+        "items": {
+          "doc": "Message lifecycle information",
+          "fields": [
+            {
+              "doc": "Flag indicating if the message has been read",
+              "name": "isRead",
+              "type": "boolean"
+            },
+            {
+              "doc": "Information about the user who read the message",
+              "name": "reader",
+              "type": {
                 "doc": "Reader information",
                 "fields": [
                   {
+                    "doc": "Unique identifier of the reader",
                     "name": "id",
-                    "type": "string",
-                    "doc": "Unique identifier of the reader"
+                    "type": "string"
                   },
                   {
+                    "doc": "Username of the reader",
                     "name": "username",
-                    "type": "string",
-                    "doc": "Username of the reader"
+                    "type": "string"
                   },
                   {
+                    "doc": "Timestamp when the message was read",
                     "name": "readTimestamp",
-                    "type": "string",
-                    "doc": "Timestamp when the message was read"
+                    "type": "string"
                   }
-                ]
+                ],
+                "name": "Reader",
+                "type": "record"
               }
-            ],
-            "default": null
-          }
-        ],
-        "name": "Lifecycle",
-        "type": "record"
+            }
+          ],
+          "name": "LifecycleEntry",
+          "type": "record"
+        }
       }
     }
   ],

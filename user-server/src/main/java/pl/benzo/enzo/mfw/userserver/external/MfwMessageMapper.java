@@ -4,13 +4,17 @@ import pl.benzo.enzo.mfw.messageserver.MfwMessage;
 import pl.benzo.enzo.mfw.userserver.domain.data.dto.UserDTO;
 import pl.benzo.enzo.mfw.userserver.domain.data.enumeration.Role;
 import pl.benzo.enzo.mfw.userserver.external.data.MessageDTO;
+import pl.benzo.enzo.mfw.userserver.external.data.dto.LifecycleEntryDTO;
 import pl.benzo.enzo.mfw.userserver.external.data.dto.MetadataDTO;
 import pl.benzo.enzo.mfw.userserver.external.data.dto.ReaderDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MfwMessageMapper {
+
     public static MessageDTO toMessageDTO(MfwMessage mfwMessage) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -28,18 +32,24 @@ public class MfwMessageMapper {
         );
 
 
-        ReaderDTO readerDTO = null;
-        if (mfwMessage.getLifecycle().getReader() != null) {
-            readerDTO = new ReaderDTO(
-                    mfwMessage.getLifecycle().getReader().getId().toString(),
-                    mfwMessage.getLifecycle().getReader().getUsername().toString(),
-                    mfwMessage.getLifecycle().getReader().getReadTimestamp() != null
-                            ? LocalDateTime.parse(mfwMessage.getLifecycle().getReader().getReadTimestamp(), formatter)
-                            : null
-            );
-        }
+        List<LifecycleEntryDTO> lifecycleEntries = new ArrayList<>();
+        for (var lifecycleRecord : mfwMessage.getLifecycle()) {
+            ReaderDTO readerDTO = null;
+            if (lifecycleRecord.getReader() != null) {
+                readerDTO = new ReaderDTO(
+                        lifecycleRecord.getReader().getId().toString(),
+                        lifecycleRecord.getReader().getUsername().toString(),
+                        lifecycleRecord.getReader().getReadTimestamp() != null
+                                ? LocalDateTime.parse(lifecycleRecord.getReader().getReadTimestamp(), formatter)
+                                : null
+                );
+            }
 
-        boolean isRead = mfwMessage.getLifecycle().getIsRead();
+            LifecycleEntryDTO lifecycleEntryDTO = new LifecycleEntryDTO();
+            lifecycleEntryDTO.setRead(lifecycleRecord.getIsRead());
+            lifecycleEntryDTO.setReader(readerDTO);
+            lifecycleEntries.add(lifecycleEntryDTO);
+        }
 
 
         MessageDTO messageDTO = new MessageDTO();
@@ -48,8 +58,7 @@ public class MfwMessageMapper {
         messageDTO.setContent(mfwMessage.getContent().toString());
         messageDTO.setProfile(userDTO);
         messageDTO.setMetadata(metadataDTO);
-        messageDTO.setRead(isRead);
-        messageDTO.setReader(readerDTO);
+        messageDTO.setLifecycleEntries(lifecycleEntries);
 
         return messageDTO;
     }

@@ -14,7 +14,7 @@ import pl.benzo.enzo.mfw.messageserver.logic.MfwMessageConverter;
 @RequiredArgsConstructor
 public class KafkaSyncMessageConsumer {
 
-    @KafkaListener(topics = "mfw_MESSAGES", groupId = "consumer55")
+    @KafkaListener(topics = "mfw.MESSAGES_FROM_WORD", groupId = "message_component_group_1")
     public void consume(GenericRecord message) {
         try {
             MfwMessage mfwMessage = MfwMessageConverter.convertToMfwMessage(message);

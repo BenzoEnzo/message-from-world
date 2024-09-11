@@ -45,9 +45,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("/{id}/points")
-    public ResponseEntity<Void> addPointToUser(@PathVariable Long id){
-        userService.addPointToUser(id);
+    @PatchMapping("/{authorClientAppId}/points")
+    public ResponseEntity<Void> addPointToUser(@PathVariable String authorClientAppId){
+        userService.addPointToUser(authorClientAppId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

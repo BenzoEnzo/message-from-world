@@ -23,4 +23,7 @@ public class KafkaConfiguration {
 
     @Value("${spring.kafka.schema.registry.url}")
     String schemaRegistryUrl;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    String springGroupId;
 }

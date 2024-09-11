@@ -84,8 +84,8 @@ public class UserService {
                 });
     }
 
-    public void addPointToUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User does not exist"));
+    public void addPointToUser(String clientAppId){
+        User user = userRepository.findByClientAppIdAndDeprecateIsFalse(clientAppId).orElseThrow(() -> new RuntimeException("User does not exist"));
         int points = user.getPoints() + 1;
         user.setPoints(points);
         userRepository.save(user);

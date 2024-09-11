@@ -54,7 +54,7 @@ class KafkaConsumerConfiguration {
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
         properties.put(SCHEMA_REGISTRY_URL_KEY, kafkaConfiguration.getSchemaRegistryUrl());
         properties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "false");
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer55");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConfiguration.getSpringGroupId());
 
         return properties;
     }
