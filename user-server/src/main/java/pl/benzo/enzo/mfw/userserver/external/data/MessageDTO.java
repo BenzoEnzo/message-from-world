@@ -8,6 +8,7 @@ import pl.benzo.enzo.mfw.userserver.external.data.dto.MetadataDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +18,5 @@ public class MessageDTO {
     private String content;
     private UserDTO profile;
     private MetadataDTO metadata;
-    private List<LifecycleEntryDTO> lifecycleEntries;
+    private Set<LifecycleEntryDTO> lifecycleEntries;
 }

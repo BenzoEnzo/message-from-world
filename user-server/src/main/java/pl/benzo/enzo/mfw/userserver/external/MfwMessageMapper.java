@@ -11,7 +11,9 @@ import pl.benzo.enzo.mfw.userserver.external.data.dto.ReaderDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MfwMessageMapper {
 
@@ -32,7 +34,7 @@ public class MfwMessageMapper {
         );
 
 
-        List<LifecycleEntryDTO> lifecycleEntries = new ArrayList<>();
+        Set<LifecycleEntryDTO> lifecycleEntries = new HashSet<>();
         for (var lifecycleRecord : mfwMessage.getLifecycle()) {
             ReaderDTO readerDTO = null;
             if (lifecycleRecord.getReader() != null) {

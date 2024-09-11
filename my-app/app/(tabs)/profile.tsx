@@ -55,7 +55,8 @@ export default function ProfileScreen() {
                     deviceName: '',
                     ipAddress: ''
                 },
-                profile: loggedUserData
+                profile: loggedUserData,
+                lifecycleEntries: []
             };
             const headers: AxiosRequestHeaders = { Authorization: `Bearer ${token}` } as AxiosRequestHeaders;
             await sendMessage(messageData, headers);

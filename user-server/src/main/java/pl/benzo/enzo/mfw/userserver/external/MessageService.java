@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import pl.benzo.enzo.mfw.messageserver.*;
 import pl.benzo.enzo.mfw.messageserver.domain.KafkaSyncMessagePublisher;
@@ -16,18 +17,14 @@ import pl.benzo.enzo.mfw.userserver.domain.logic.user.UserService;
 import pl.benzo.enzo.mfw.userserver.external.data.MessageDTO;
 import pl.benzo.enzo.mfw.userserver.external.data.dto.LifecycleEntryDTO;
 import pl.benzo.enzo.mfw.userserver.external.data.dto.ReaderDTO;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +37,8 @@ public class MessageService {
     private final JwtHandler jwtHandler;
     private final UserService userService;
     private final UserMapper userMapper;
+    @Value("${spring.kafka.topic.name}")
+    private String topicName;
 
     public MessageDTO sendMessage(MessageDTO message, HttpServletRequest request) {
         UserDTO profile = handleAuthorization(request);
@@ -52,7 +51,7 @@ public class MessageService {
         LOGGER.info(mfwMessage.toString());
         LOGGER.info(mfwMessage.getMessageId().toString());
 
-        kafkaSyncMessagePublisher.publish("mfw.MESSAGES_FROM_WORD", mfwMessage, message.getMessageId());
+        kafkaSyncMessagePublisher.publish(topicName, mfwMessage, message.getMessageId());
 
         message.setProfile(afterSendMsgToWorld(message));
         return message;
@@ -60,22 +59,29 @@ public class MessageService {
 
     public MessageDTO getRandomAndUpdateMessage(HttpServletRequest request) {
         UserDTO profile = handleAuthorization(request);
-        MfwMessage randomMessage = kafkaRandomMessageService.getRandomMessage("mfw.MESSAGES_FROM_WORD");
+        MfwMessage randomMessage = kafkaRandomMessageService.getRandomMessage(topicName);
 
         MessageDTO msgDTO = MfwMessageMapper.toMessageDTO(randomMessage);
         if (msgDTO.getProfile().getMail().equals(profile.getMail())) {
-            return getRandomAndUpdateMessage(request);  // Rekurencja w celu znalezienia wiadomości od innego użytkownika
+            return getRandomAndUpdateMessage(request);
         } else {
-            // Aktualizacja lifecycle po przeczytaniu wiadomości
-            List<LifecycleEntryDTO> lifecycleEntries = msgDTO.getLifecycleEntries();
+            if(msgDTO.getLifecycleEntries().isEmpty()){
+                msgDTO.setLifecycleEntries(new HashSet<>());
+            }
+            Set<LifecycleEntryDTO> lifecycleEntries = msgDTO.getLifecycleEntries();
             ReaderDTO reader = new ReaderDTO(profile.getClientAppId(), profile.getUsername(), LocalDateTime.now());
             LifecycleEntryDTO newEntry = new LifecycleEntryDTO(true, reader);
-            lifecycleEntries.add(newEntry);
+
+            try {
+                lifecycleEntries.add(newEntry);
+            }catch(Exception e){
+                getRandomAndUpdateMessage(request);
+            }
 
             msgDTO.setLifecycleEntries(lifecycleEntries);
             MfwMessage mfwMessage = createKafkaMsgObject(msgDTO);
 
-            kafkaSyncMessagePublisher.publish("mfw_MESSAGES", mfwMessage, msgDTO.getMessageId());
+            kafkaSyncMessagePublisher.publish(topicName, mfwMessage, msgDTO.getMessageId());
         }
         return msgDTO;
     }
@@ -114,7 +120,7 @@ public class MessageService {
                 .setDevice(message.getMetadata().deviceName())
                 .build();
 
-        // Mapowanie listy lifecycle entries
+
         List<LifecycleEntry> lifecycleEntries = new ArrayList<>();
         for (LifecycleEntryDTO entryDTO : message.getLifecycleEntries()) {
             Reader reader = null;

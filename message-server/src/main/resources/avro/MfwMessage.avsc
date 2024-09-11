@@ -81,47 +81,51 @@
     {
       "doc": "Lifecycle information of the message",
       "name": "lifecycle",
-      "type": {
-        "type": "array",
-        "items": {
-          "doc": "Message lifecycle information",
-          "fields": [
-            {
-              "doc": "Flag indicating if the message has been read",
-              "name": "isRead",
-              "type": "boolean"
-            },
-            {
-              "doc": "Information about the user who read the message",
-              "name": "reader",
-              "type": {
-                "doc": "Reader information",
-                "fields": [
-                  {
-                    "doc": "Unique identifier of the reader",
-                    "name": "id",
-                    "type": "string"
-                  },
-                  {
-                    "doc": "Username of the reader",
-                    "name": "username",
-                    "type": "string"
-                  },
-                  {
-                    "doc": "Timestamp when the message was read",
-                    "name": "readTimestamp",
-                    "type": "string"
-                  }
-                ],
-                "name": "Reader",
-                "type": "record"
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "doc": "Message lifecycle information",
+            "fields": [
+              {
+                "doc": "Flag indicating if the message has been read",
+                "name": "isRead",
+                "type": "boolean"
+              },
+              {
+                "doc": "Information about the user who read the message",
+                "name": "reader",
+                "type": {
+                  "doc": "Reader information",
+                  "fields": [
+                    {
+                      "doc": "Unique identifier of the reader",
+                      "name": "id",
+                      "type": "string"
+                    },
+                    {
+                      "doc": "Username of the reader",
+                      "name": "username",
+                      "type": "string"
+                    },
+                    {
+                      "doc": "Timestamp when the message was read",
+                      "name": "readTimestamp",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "Reader",
+                  "type": "record"
+                }
               }
-            }
-          ],
-          "name": "LifecycleEntry",
-          "type": "record"
+            ],
+            "name": "LifecycleEntry",
+            "type": "record"
+          }
         }
-      }
+      ],
+      "default": null
     }
   ],
   "name": "MfwMessage",

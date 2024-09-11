@@ -4,7 +4,7 @@ import SignInDTO = DTOs.SignInDTO;
 import AuthorizationDTO = DTOs.AuthorizationDTO;
 import UserDTO = DTOs.UserDTO;
 import MessageDTO = DTOs.MessageDTO;
-const API_BASE_URL = 'http://192.168.1.151:8084/api';
+const API_BASE_URL = 'https://dce4-37-30-10-29.ngrok-free.app';
 
 export const login = async (credentials: SignInDTO): Promise<AxiosResponse<AuthorizationDTO>> => {
     return axios.post<AuthorizationDTO>(`${API_BASE_URL}/accounts/login`, credentials);
