@@ -65,12 +65,12 @@ export namespace DTOs {
 
     export interface MessageDTO {
         content: string;
-        messageId: string;
+        messageId?: string;
         metadata: MetadataDTO;
-        profile: UserDTO;
-        read: boolean;
-        reader: ReaderDTO;
-        sendAt: DateAsString;
+        profile?: UserDTO;
+        read?: boolean;
+        reader?: ReaderDTO;
+        sendAt?: DateAsString;
     }
 
     export interface MetadataDTO {

@@ -20,7 +20,6 @@ export default function HomeScreen() {
       }
     };
 
-    // Wywołanie funkcji czyszczenia pamięci cache
     clearCacheOnStartup();
   }, []);
 

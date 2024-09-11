@@ -7,8 +7,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, {AxiosResponse, AxiosRequestHeaders, AxiosHeaders} from 'axios';
 const { width } = Dimensions.get('window');
 import { honorUser } from "@/scripts/apiService";
-import {DTOs} from "@/shared/dto/dtos";
+import { DTOs } from "@/shared/dto/dtos";
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import UserDTO = DTOs.UserDTO;
+import MessageDTO = DTOs.MessageDTO;
 
 export default function ProfileScreen() {
     const [token, setToken] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export default function ProfileScreen() {
         };
 
         fetchStoredData();
-    }, []);
+    }, [loggedUserData]);
 
 
     const handleSendMessage = async () => {
@@ -47,10 +49,28 @@ export default function ProfileScreen() {
         }
 
         try {
-            const messageData = { content };
+
+            const messageData: DTOs.MessageDTO = { content: content,
+                metadata: {
+                    deviceName: '',
+                    ipAddress: ''
+                },
+                profile: loggedUserData
+            };
             const headers: AxiosRequestHeaders = { Authorization: `Bearer ${token}` } as AxiosRequestHeaders;
             await sendMessage(messageData, headers);
-            Alert.alert('Success', 'Message sent successfully.');
+
+            if (loggedUserData?.points) {
+                const updatedPoints = loggedUserData.points - 1;
+                const updatedUserData = {
+                    ...loggedUserData,
+                    points: updatedPoints
+                };
+                setLoggedUserData(updatedUserData);
+                await AsyncStorage.setItem('loggedUserData', JSON.stringify(updatedUserData));
+            }
+
+                Alert.alert('Success', 'Message sent successfully.');
             setContent('');
         } catch (error) {
             Alert.alert('Error', 'Failed to send message.');
@@ -65,11 +85,13 @@ export default function ProfileScreen() {
             const headers: AxiosRequestHeaders = { Authorization: `Bearer ${token}` } as AxiosRequestHeaders;
 
             const response = await readRandomMessage(headers);
-            const clientAppId = response.data.profile.clientAppId;
-            setRandomMessage(response.data.content);
-            if(clientAppId){
-            setMessageAuthorClientAppId(clientAppId);
+
+            if(response.data.profile?.clientAppId){
+                const clientAppId = response.data.profile.clientAppId;
+                setRandomMessage(response.data.content);
+                setMessageAuthorClientAppId(clientAppId);
             }
+
         } catch (error) {
             Alert.alert('Error', 'Failed to load random message.');
         } finally {
@@ -104,6 +126,7 @@ export default function ProfileScreen() {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <AuthLayout>
             <View style={styles.container}>
                 {/* Profile Section */}
@@ -111,6 +134,7 @@ export default function ProfileScreen() {
                     <ThemedText style={styles.profileTitle}>Welcome: {loggedUserData?.username}</ThemedText>
                     <ThemedText style={styles.profileInfo}>Points: {loggedUserData?.points}</ThemedText>
                     <ThemedText style={styles.profileInfo}>Country: {loggedUserData?.country}</ThemedText>
+                    <ThemedText style={styles.profileInfo}>Rank: {loggedUserData?.role}</ThemedText>
                 </View>
 
                 {/* Actions Section */}
@@ -144,7 +168,9 @@ export default function ProfileScreen() {
                             onChangeText={setContent}
                             placeholder="Write your message..."
                             multiline
-                            numberOfLines={4}
+                            numberOfLines={9}
+                            onSubmitEditing={() => Keyboard.dismiss()}
+                            blurOnSubmit={true}
                         />
                         <TouchableOpacity onPress={handleSendMessage} style={styles.button}>
                             <ThemedText style={styles.buttonText}>Send Message</ThemedText>
@@ -156,7 +182,6 @@ export default function ProfileScreen() {
                     <View style={styles.messageContainer}>
                         {randomMessage && (<>
                             <View style={styles.messageBox}>
-                                <ThemedText style={styles.subtitle}>Random Message:</ThemedText>
                                 <ThemedText style={styles.messageContent}>{randomMessage}</ThemedText>
                             </View>
                             {!loadingMessage && <>
@@ -178,6 +203,7 @@ export default function ProfileScreen() {
                 )}
             </View>
         </AuthLayout>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -189,31 +215,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     profileSection: {
-        marginTop: -10,
+        marginTop: 0,
         marginBottom: 20,
         backgroundColor: '#ffffff',
         padding: 20,
         borderRadius: 10,
-        height: '30%',
+        height: '20%',
         elevation: 2,
         alignItems: 'center',
     },
     profileTitle: {
         fontSize: 24,
         fontWeight: 'bold',
+        color: '#2ecc71',
         marginBottom: 10,
     },
     profileInfo: {
         fontSize: 18,
+        color: '#2ecc71',
         marginBottom: 5,
+        marginLeft: 0
     },
     actionsWrapper: {
-        borderColor: '#f1c40f',  // Złoty kolor ramki
+        borderColor: '#f1c40f',
         borderWidth: 2,
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
-        backgroundColor: 'transparent', // Przezroczyste tło
+        backgroundColor: 'transparent',
     },
     actionsTitle: {
         color: '#f1c40f',
@@ -228,7 +257,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     actionButton: {
-        backgroundColor: '#2ecc71',  // Zielone przyciski
+        backgroundColor: '#2ecc71',
         padding: 15,
         borderRadius: 10,
         flex: 1,
@@ -240,14 +269,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     formContainer: {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
         padding: 20,
         borderRadius: 10,
+        height: '55%',
         elevation: 2,
-        marginBottom: 20,
+        marginBottom: 5,
     },
     input: {
-        height: 100,
+        height: '80%',
         backgroundColor: '#f0f0f0',
         paddingHorizontal: 15,
         borderRadius: 10,
@@ -277,8 +307,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     messageContainer: {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
         padding: 20,
+        height: '40%',
         borderRadius: 10,
         elevation: 2,
         marginBottom: 20,
@@ -286,6 +317,7 @@ const styles = StyleSheet.create({
     messageBox: {
         backgroundColor: '#ffffff',
         padding: 20,
+        height: '80%',
         borderRadius: 10,
         elevation: 2,
         marginTop: 20,
