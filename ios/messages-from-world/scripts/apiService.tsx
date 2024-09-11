@@ -4,7 +4,7 @@ import SignInDTO = DTOs.SignInDTO;
 import AuthorizationDTO = DTOs.AuthorizationDTO;
 import UserDTO = DTOs.UserDTO;
 import MessageDTO = DTOs.MessageDTO;
-const API_BASE_URL = 'https://192.168.1.131:8084';
+import {API_BASE_URL} from "@/config";
 
 export const login = async (credentials: SignInDTO): Promise<AxiosResponse<AuthorizationDTO>> => {
     return axios.post<AuthorizationDTO>(`${API_BASE_URL}/accounts/login`, credentials);
